@@ -5,10 +5,19 @@
  */
 package Patrones;
 
+import java.util.Random;
+
 public class Main
 {
     public static void main(String[] args)
     {
+        
+         Random rd = new Random();
+        for(int i=1; i<=10;i++){
+            int numeroAleatorio = rd.nextInt(900)+100;
+            CuentaAdapter cuenta1 = new CuentaAdapter(i,numeroAleatorio);
+        }
+        
         // Crear un único cajero Automático de dólares con 100 billetes de 20, 100 de 10, 
         // 10 monedas de 0.50, 10 de 0.25 y 1000 de 0.05
 

@@ -24,17 +24,17 @@ public class AtmEC {
     private static AtmEC instance;
     private Currency moneda;
     private double dinero;
-    private ManejadorDinero manejador;
+    private Manejador manejador;
     
-    private AtmEC(Currency moneda, double dinero, ManejadorDinero manejador){
+    private AtmEC(Currency moneda, Manejador manejador){
         this.moneda = moneda;
-        this.dinero = dinero;
+        this.dinero = calcularDineroInicial(manejador);
         this.manejador = manejador;
     }
     
-    public static AtmEC getInstance(Currency moneda, double dinero, ManejadorDinero manejador){
+    public static AtmEC getInstance(Currency moneda, Manejador manejador){
         if(instance == null){
-            instance = new AtmEC(moneda,dinero,manejador);
+            instance = new AtmEC(moneda,manejador);
         }
         return instance;
     }
@@ -45,22 +45,25 @@ public class AtmEC {
     }
 
     // -----------------
-    public void sacarDinero(double dinero) {
-        this.dinero -= dinero;
-        // Todo: realizar el proceso de sacar de cada manejador la cantidad requerida
+    public boolean sacarDinero(double dinero) {
+       manejador.retirar(dinero); //false cuando dinero<al dinero del ATM y cuando no hay la cantidad necesaria de billetes para retirar
     }
 
     // -----------------
     public void ingresarDinero(double dinero, int denominacion) {
-        this.dinero += dinero;
-        // Todo: Sólo se puede depositar billetes de una sola denominación y agregarse al manejador correspondiente
+        manejador.depositar(dinero, denominacion);
     }
     
-    public void addManejador(ManejadorDinero m){
-        manejadores.add(m);
+    public void addManejador(Manejador m){
+        if(this.manejador == null){
+            manejador = m;
+        }else{
+            manejador.setNext(m);
+        }
     }
-    public ManejadorDinero removeManejador(int i){
-        return manejadores.remove(i);
+    
+    public Manejador removeManejador(int i){
+        
     }
 
     //Dentro de las transacciones se debe llamar al ATM para hacer el retiro o deposito de la cuenta correspondiente
@@ -130,6 +133,10 @@ public class AtmEC {
             System.out.println("Invalid choice\n\n");
             anotherTransaction(cuenta);
         }
+    }
+
+    private double calcularDineroInicial(Manejador manejador) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     

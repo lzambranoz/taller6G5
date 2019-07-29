@@ -24,15 +24,15 @@ public class AtmEC {
     private static AtmEC instance;
     private Currency moneda;
     private double dinero;
-    private Manejador manejador;
+    private ManejadorDinero manejador;
     
-    private AtmEC(Currency moneda, double dinero, Manejador manejador){
+    private AtmEC(Currency moneda, double dinero, ManejadorDinero manejador){
         this.moneda = moneda;
         this.dinero = dinero;
         this.manejador = manejador;
     }
     
-    public static AtmEC getInstance(Currency moneda, double dinero, Manejador manejador){
+    public static AtmEC getInstance(Currency moneda, double dinero, ManejadorDinero manejador){
         if(instance == null){
             instance = new AtmEC(moneda,dinero,manejador);
         }
@@ -56,10 +56,10 @@ public class AtmEC {
         // Todo: Sólo se puede depositar billetes de una sola denominación y agregarse al manejador correspondiente
     }
     
-    public void addManejador(Manejador m){
+    public void addManejador(ManejadorDinero m){
         manejadores.add(m);
     }
-    public Manejador removeManejador(int i){
+    public ManejadorDinero removeManejador(int i){
         return manejadores.remove(i);
     }
 

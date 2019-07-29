@@ -17,7 +17,10 @@ public class ManejadorDinero implements Manejador
 
     @Override
     public boolean retirar(int monto){
-        
+        if (this.monto-monto>0) {
+            this.monto-=monto;
+            return true;
+        }
         return false;
     }
     @Override

@@ -26,15 +26,15 @@ public class AtmEC {
     private double dinero;
     private Manejador manejador;
     
-    private AtmEC(Currency moneda, Manejador manejador){
-        this.moneda = moneda;
-        this.dinero = calcularDineroInicial(manejador);
-        this.manejador = manejador;
+    private AtmEC(){
+        this.moneda = Currency.getInstance(Locale.US);
+        this.dinero = 0;
+        this.manejador = null;
     }
     
-    public static AtmEC getInstance(Currency moneda, Manejador manejador){
+    public static AtmEC getInstance(){
         if(instance == null){
-            instance = new AtmEC(moneda,manejador);
+            instance = new AtmEC();
         }
         return instance;
     }
@@ -58,7 +58,7 @@ public class AtmEC {
         if(this.manejador == null){
             manejador = m;
         }else{
-            manejador.setNext(m);
+            manejador.setNext(m); //cambiar, siempre debe agregar al siguiente del siguiente
         }
     }
     

@@ -9,15 +9,36 @@ import java.util.ArrayList;
 import java.util.Currency;
 import java.util.Locale;
 
-public class AtmUK {
+public class AtmEC {
+    /*
     protected final Currency currency=Locale.UK;
     protected double dinero = 0;
     protected ArrayList <Manejador> manejadores; // Cada manejador puede entregar dinero de una sola denominación
 
     // -----------------
-    public AtmUK() {
+    public AtmEC() {
       manejadores = new ArrayList<Manejador>();
     }
+    */
+    
+    private static AtmEC instance;
+    private Currency moneda;
+    private double dinero;
+    private Manejador manejador;
+    
+    private AtmEC(Currency moneda, double dinero, Manejador manejador){
+        this.moneda = moneda;
+        this.dinero = dinero;
+        this.manejador = manejador;
+    }
+    
+    public static AtmEC getInstance(Currency moneda, double dinero, Manejador manejador){
+        if(instance == null){
+            instance = new AtmEC(moneda,dinero,manejador);
+        }
+        return instance;
+    }
+    
     // -----------------
     public double getTotal() {
         return this.dinero;
@@ -34,7 +55,7 @@ public class AtmUK {
         this.dinero += dinero;
         // Todo: Sólo se puede depositar billetes de una sola denominación y agregarse al manejador correspondiente
     }
-
+    
     public void addManejador(Manejador m){
         manejadores.add(m);
     }

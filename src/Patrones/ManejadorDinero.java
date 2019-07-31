@@ -41,7 +41,9 @@ public class ManejadorDinero implements Manejador
         this.cantidad = cantidad;
     }
 
-    
+    @Override
+    public Manejador getNext() {
+        return this.next;
+    }
 
-    
 }

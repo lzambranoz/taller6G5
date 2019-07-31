@@ -2,43 +2,46 @@ package Patrones;
 
 public class ManejadorDinero implements Manejador
 {
-    protected int monto;
-    protected int denominacion;
+    protected int cantidad;
+    protected double denominacion;
     private Manejador next;
-
-    /*public ManejadorDinero(int monto, int denominacion){
-        this.monto = monto; // Total de billetes
-        this.denominacion = denominacion; // Valor de cada billete
-    }*/
-
-    public int getMonto(){ return monto; }
-    public int getDenominacion(){ return denominacion; }
-    public void setMonto(int monto){ this.monto = monto; }
-
-    @Override
-    public boolean retirar(int monto){
-        if (this.monto-monto>0) {
-            this.monto-=monto;
-            return true;
-        }
-        return false;
-    }
-    @Override
-    public boolean depositar(int monto, int denominacion){
-        
-        return false;
-    }
-
-    @Override
-    public void crearManejador(int monto, int denominacion) {
-        this.monto=monto;
-        this.denominacion=denominacion;
+    
+    public ManejadorDinero(int cantidad, double denominacion){
+        this.cantidad = cantidad;
+        this.denominacion = denominacion;
     }
 
     @Override
     public void setNext(Manejador m) {
         this.next = m;
     }
+
+    @Override
+    public boolean retirar(double monto) {
+        return false;
+    }
+
+    @Override
+    public boolean depositar(int cantidad, int denominacion) {
+        return false;
+    }
+
+    @Override
+    public int getCantidad() {
+        return this.cantidad;
+    }
+
+    @Override
+    public double getDenominacion() {
+        return this.denominacion;
+    }
+
+    @Override
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    
 
     
 }

@@ -51,9 +51,25 @@ public class AtmEC {
             manejador.setNext(m); //cambiar, siempre debe agregar al siguiente del siguiente
         }
     }
+
+    public void setManejador(Manejador manejador) {
+        this.manejador = manejador;
+    }
     
-    public Manejador removeManejador(int i){
+    public Manejador removeManejador(double i){//cambie a double porque la denominacion es double y debo buscar eso, verdad?
+        Manejador m = new ManejadorDinero(0,0);
+        if(this.manejador.getDenominacion() == i){
+            m = this.manejador;
+            this.setManejador(this.manejador.getNext());
+        }else if(this.manejador.getNext().getDenominacion() == i){
+            m = this.manejador.getNext();
+            Manejador after = this.manejador.getNext().getNext();
+            this.manejador.setNext(after);
+        }else{
+            //aqui deberia aplicarle el recursivo
+        }
         
+        return m;
     }
 
     //Dentro de las transacciones se debe llamar al ATM para hacer el retiro o deposito de la cuenta correspondiente

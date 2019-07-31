@@ -10,16 +10,6 @@ import java.util.Currency;
 import java.util.Locale;
 
 public class AtmEC {
-    /*
-    protected final Currency currency=Locale.UK;
-    protected double dinero = 0;
-    protected ArrayList <Manejador> manejadores; // Cada manejador puede entregar dinero de una sola denominación
-
-    // -----------------
-    public AtmEC() {
-      manejadores = new ArrayList<Manejador>();
-    }
-    */
     
     private static AtmEC instance;
     private Currency moneda;
@@ -134,10 +124,5 @@ public class AtmEC {
             anotherTransaction(cuenta);
         }
     }
-
-    private double calcularDineroInicial(Manejador manejador) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    
+ 
 }

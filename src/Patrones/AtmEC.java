@@ -33,6 +33,14 @@ public class AtmEC {
         return this.dinero;
     }
 
+    public void setDinero(double dinero) {
+        this.dinero = dinero;
+    }
+
+    public double getDinero() {
+        return dinero;
+    }
+    
     public boolean sacarDinero(double dinero) { //asumir que siempre se deposita de la misma demonicacion
        if(manejador.retirar(dinero)){ //false cuando dinero<al dinero del ATM y cuando no hay la cantidad necesaria de billetes para retirar
            return true;
@@ -97,29 +105,28 @@ public class AtmEC {
                     // Todo: actualizar tanto la cuenta como el atm y de los manejadores
                     // cuenta.retirar(amount);
                     // AtmUK.sacarDinero(amount); //ESTO RETORNA UN BOOLEANO, cual es el fin
+                    // Todo: Mostrar resumen de transacción o error
+                    // "You have withdrawn "+amount+" and your new balance is "+balance;
                     if(sacarDinero(amount)){
                         cuenta.Retirar(amount); //Aqui lanza el error
                         instance.sacarDinero(amount); 
                     }
-                    // Todo: Mostrar resumen de transacción o error
-                    // "You have withdrawn "+amount+" and your new balance is "+balance;
                     anotherTransaction(cuenta); 
                 }
             break; 
             case 2:
-                // option number 2 is depositing 
-                float deposit; 
-                System.out.println("Please enter amount you would wish to deposit: "); 
-                deposit = scanner.nextFloat();
+                // option number 2 is depositing - se supone que el ingreso de dinero es de una misma denominacion
+                double deposit;
+                int cant;
+                System.out.println("Please enter how many banknotes you would wish to deposit: ");
+                cant = scanner.nextInt();
+                System.out.println("Please enter denomination you would wish to deposit: "); 
+                deposit = scanner.nextDouble();
                 // Todo: actualizar tanto la cuenta como el atm
                 // Todo: Mostrar resumen de transacción o error
                 // "You have withdrawn "+amount+" and your new balance is "+balance;
-                //cuenta.Depositar(deposit, );
-                
-                
-                
-                
-                
+                this.manejador.depositar(cant,deposit);//actualizacion de los manejadores
+                this.setDinero(this.getDinero()+(deposit*cant)); //actualizacion atm
                 anotherTransaction(cuenta);
                 break; 
             case 3:
@@ -130,7 +137,7 @@ public class AtmEC {
                 break;
             case 4:
                 // Todo: mostrar el balance del ATM con los billetes en cada manejador
-                System.out.println("Balance ");
+                System.out.println("ATM balance is: "+this.getDinero());
                 anotherTransaction(cuenta); 
                 break;
             default:

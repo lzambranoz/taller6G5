@@ -11,49 +11,43 @@ import java.util.Random;
 import java.util.Scanner;
 public class Main
 {
+    static ArrayList<CuentaAdapter> CuentasUS = new ArrayList<>();
     public static void main(String[] args)
     {
+        IniciarlizarCuentas();
         Scanner sc = new Scanner(System.in);
-        Random rd = new Random();
-        ArrayList<CuentaAdapter> CuentasUS= new ArrayList<>();//Lista de cuentas con local.us
+        
+        //Lista de cuentas con local.us
         
         // Crear 10 cuentas nuevas en dólares locale.US con un saldo inicial entre 100.00 y 1000.00 USD cada una.
         
-        for(int i=1; i<=10;i++){
-            int numeroAleatorio = rd.nextInt(900)+100;
-            CuentaAdapter cuenta = new CuentaAdapter(i,numeroAleatorio);
-            CuentasUS.add(cuenta);
-        }
-        int op=0;
+       
+        String op="0";
         do{
         System.out.println("--- Menu Princiapl ---");
         System.out.println("1. Seleccionar cuentas");
         System.out.println("2. Realizar Transacciones");
         System.out.println("3. Salir");
         System.out.println("Escoga una opcion");
-        op = sc.nextInt();
+        op = sc.next();
+        int id=0;
         switch(op){
-            case 1:
+            case "1":
                     System.out.println("Ingrese el id de la cuenta a solicitar");
-                    int id = sc.nextInt();
-                     Iterator it = CuentasUS.iterator();
-                     while(it.hasNext()){
-                        CuentaAdapter c = (CuentaAdapter) it.next();
-                        if(c.getId()==id){
-                            System.out.println("cuenta"+c.getId());
-                        }
-                         
-                     }
+                    id = sc.nextInt();
+                    System.out.println("Esta es la cuenta de banco con ID: "+Cuenta(id).getId());
+                    
                      break;
-            case 2:
-                    System.out.println("");
+            case "2":
+                    //Aqui debe llamarse al metodo transaction(Cuenta(id))  de la clase AtmEC 
+                    break;
                     
                      
         }
           
         
-        }while(op!=3);
-        
+        }while(!(op.equals("3")));
+        }
         
    
        
@@ -65,7 +59,27 @@ public class Main
         // Menú principal para seleccionar una de las 10 cuentas solo con el id
         
         // Mostrar el menú para realizar transacciones en el cajero automático
-    }
+    
+    
+     static void IniciarlizarCuentas(){ 
+         
+         for(int i=1; i<=10;i++){
+         Random rd = new Random();   
+            int numeroAleatorio = rd.nextInt(900)+100;
+            CuentaAdapter cuenta = new CuentaAdapter(i,numeroAleatorio);
+            CuentasUS.add(cuenta);
+        }
+         
+     }
+    
+    static CuentaAdapter Cuenta(int id){
+        for(CuentaAdapter cuenta: CuentasUS){
+            if(cuenta.getId()==id){
+                return cuenta;
+            }
+        }
+        return null;
+    } 
 
     
 }

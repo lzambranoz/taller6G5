@@ -74,7 +74,7 @@ public class AtmEC {
     }
 
     //Dentro de las transacciones se debe llamar al ATM para hacer el retiro o deposito de la cuenta correspondiente
-    public static void transaction(Account cuenta){
+    public void transaction(CuentaAdapter cuenta){
         // here is where most of the work is
         Scanner scanner = new Scanner(System.in);
         int choice; 
@@ -89,16 +89,18 @@ public class AtmEC {
                 float amount; 
                 System.out.println("Please enter amount to withdraw: "); 
                 amount = scanner.nextFloat();
-                if(amount > cuenta.getAmount() || amount == 0){
+                if(amount > cuenta.Balance() || amount == 0){
                     System.out.println("You have insufficient funds\n\n"); 
                     anotherTransaction(cuenta); // ask if they want another transaction
                 } else {
                     // Todo: verificar que se puede realizar el retiro del atm
-
                     // Todo: actualizar tanto la cuenta como el atm y de los manejadores
                     // cuenta.retirar(amount);
-                    // AtmUK.sacarDinero(amount);
-
+                    // AtmUK.sacarDinero(amount); //ESTO RETORNA UN BOOLEANO, cual es el fin
+                    if(sacarDinero(amount)){
+                        cuenta.Retirar(amount); //Aqui lanza el error
+                        instance.sacarDinero(amount); 
+                    }
                     // Todo: Mostrar resumen de transacción o error
                     // "You have withdrawn "+amount+" and your new balance is "+balance;
                     anotherTransaction(cuenta); 
@@ -110,19 +112,25 @@ public class AtmEC {
                 System.out.println("Please enter amount you would wish to deposit: "); 
                 deposit = scanner.nextFloat();
                 // Todo: actualizar tanto la cuenta como el atm
-                    
                 // Todo: Mostrar resumen de transacción o error
                 // "You have withdrawn "+amount+" and your new balance is "+balance;
+                //cuenta.Depositar(deposit, );
+                
+                
+                
+                
+                
                 anotherTransaction(cuenta);
                 break; 
             case 3:
                 // Todo: mostrar el balance de la cuenta
                 // "Your balance is "+balance
-                System.out.println("Your balance is: "+cuenta.status());
+                System.out.println("Your balance is: "+cuenta.Balance());
                 anotherTransaction(cuenta); 
                 break;
             case 4:
                 // Todo: mostrar el balance del ATM con los billetes en cada manejador
+                System.out.println("Balance ");
                 anotherTransaction(cuenta); 
                 break;
             default:
@@ -131,7 +139,7 @@ public class AtmEC {
                 break;
         }
     }
-    public static void anotherTransaction(Account cuenta){
+    public void anotherTransaction(CuentaAdapter cuenta){
         
         System.out.println("Do you want another transaction?\n\nPress 1 for another transaction\n2 To exit");
         int opcionTransaccion;

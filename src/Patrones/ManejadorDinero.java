@@ -22,7 +22,7 @@ public class ManejadorDinero implements Manejador
     }
 
     @Override
-    public boolean depositar(int cantidad, int denominacion) {
+    public boolean depositar(int cantidad, double denominacion) {
         return false;
     }
 

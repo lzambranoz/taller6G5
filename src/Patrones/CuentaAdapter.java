@@ -36,6 +36,8 @@ public class CuentaAdapter implements Cuenta{
         try {
             if (estado.startsWith("Error")) {
                 throw new TransactionException("Saldo insuficiente");
+            }else{
+                //aqui implementar metodo recursivo
             }
             return true;
         } catch (TransactionException ex) {
@@ -46,7 +48,7 @@ public class CuentaAdapter implements Cuenta{
     }
 
     @Override
-    public boolean Depositar(int monto, int denominacion) {
+    public boolean Depositar(int monto, double denominacion) {
         this.cuenta.deposit(monto);
         return true;
     }

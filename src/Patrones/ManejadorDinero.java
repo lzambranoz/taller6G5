@@ -18,12 +18,37 @@ public class ManejadorDinero implements Manejador
 
     @Override
     public boolean retirar(double monto) {
-        return false;
+        if (monto==0 || monto<0) {
+            return false;
+        }if (monto%this.denominacion==0 && this.cantidad>0) {
+            if (retirar(this.cantidad-this.denominacion)) {
+                this.cantidad=(int)(this.cantidad-(monto/this.denominacion));
+                return true;
+            }return false;
+            
+        } else{
+            if (next!=null) {
+                return next.depositar(cantidad, denominacion);
+            }
+            else{
+                return false;
+            }
+        }
     }
 
     @Override
     public boolean depositar(int cantidad, double denominacion) {
-        return false;
+        if (this.denominacion == denominacion) {
+            this.cantidad = (int) (this.cantidad + (cantidad/denominacion));
+            return true;
+        }else{
+            if (next!=null) {
+                return next.depositar(cantidad, denominacion);
+            }
+            else{
+                return false;
+            }
+        }
     }
 
     @Override

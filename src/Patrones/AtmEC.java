@@ -59,7 +59,7 @@ public class AtmEC {
     }
     
     public void addManejador(Manejador m){
-        this.manejador = addManejador(m, this.manejador,null);
+        this.getInstance().manejador = addManejador(m, this.manejador,null);
     }
     
     private Manejador addManejador(Manejador m, Manejador mainManejador, Manejador previo){
@@ -161,8 +161,8 @@ public class AtmEC {
                 break;
             case 4:
                 // Todo: mostrar el balance del ATM con los billetes en cada manejador
-                System.out.println("ATM balance is: "+this.getDinero());
-                Manejador manejMostrado = this.manejador;
+                System.out.println("ATM balance is: "+this.getInstance().getDinero());
+                Manejador manejMostrado = this.getInstance().manejador;
                 do{
                     System.out.printf("%d banknotes in $%f denomination\n",manejMostrado.getCantidad(),manejMostrado.getDenominacion());
                 }while((manejMostrado = manejMostrado.getNext())!= null);
@@ -194,42 +194,5 @@ public class AtmEC {
                 break;    
         }
     }
-//    public void addManejador(Manejador m){
-//        
-//        if(this.manejador == null){
-//            manejador = m;
-//        }else {
-//            if (this.manejador.getDenominacion()< m.getDenominacion()){
-//                m.setNext(manejador);
-//                this.manejador = m;
-//                return;
-//            }else if (this.manejador.getDenominacion() == m.getDenominacion()){
-//                manejador.setCantidad(m.getCantidad());
-//                return;
-//            }
-//            Manejador manejCondition = this.manejador;
-//            while(manejCondition.getDenominacion() > m.getDenominacion()){
-//                Manejador next =manejCondition.getNext();
-//                if(manejCondition == null){
-//                    manejCondition.setNext(m);
-//                    break;
-//                }else{
-//                    
-//                }
-//
-//            }
-//        }
-//    }
-    
-//    Manejador m = new ManejadorDinero(0,0);
-//        if(this.manejador.getDenominacion() == i){
-//            m = this.manejador;
-//            this.setManejador(this.manejador.getNext());
-//        }else if(this.manejador.getNext().getDenominacion() == i){
-//            m = this.manejador.getNext();
-//            Manejador after = this.manejador.getNext().getNext();
-//            this.manejador.setNext(after);
-//        }else{}
-    
- 
+
 }

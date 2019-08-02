@@ -19,6 +19,11 @@ public class Main
         Random rd = new Random();
         ArrayList<CuentaAdapter> CuentasUS= new ArrayList<>();//Lista de cuentas con local.us
         AtmEC atm = AtmEC.getInstance();
+        atm.addManejador((Manejador)(new ManejadorDinero(100, 20)));
+        atm.addManejador((Manejador)(new ManejadorDinero(100, 10)));
+        atm.addManejador((Manejador)(new ManejadorDinero(10, 0.50)));
+        atm.addManejador((Manejador)(new ManejadorDinero(10, 0.25)));
+        atm.addManejador((Manejador)(new ManejadorDinero(1000, 0.05)));
         // Crear 10 cuentas nuevas en dólares locale.US con un saldo inicial entre 100.00 y 1000.00 USD cada una.
         
         System.out.println("ID de cuentas creadas");
@@ -53,11 +58,6 @@ public class Main
         
 
         
-        atm.addManejador((Manejador)(new ManejadorDinero(100, 20)));
-        atm.addManejador((Manejador)(new ManejadorDinero(100, 10)));
-        atm.addManejador((Manejador)(new ManejadorDinero(10, 0.50)));
-        atm.addManejador((Manejador)(new ManejadorDinero(10, 0.25)));
-        atm.addManejador((Manejador)(new ManejadorDinero(1000, 0.05)));
 
         
         //prueba de add y remove en el manejador

@@ -33,7 +33,7 @@ public class ManejadorDinero implements Manejador
                 montoFaltante -= (cantBilletes * manejInicio.getDenominacion());
                 listBilletes.add(cantBilletes);
             }
-        }while(montoFaltante > 0 || (manejInicio = manejInicio.getNext())!=null);
+        }while(montoFaltante > 0 && (manejInicio = manejInicio.getNext())!=null);
         if (montoFaltante == 0){
             manejInicio = this;
             for(int cantB: listBilletes){

@@ -1,5 +1,7 @@
 package Patrones;
 
+import java.util.LinkedList;
+
 public class ManejadorDinero implements Manejador
 {
     protected int cantidad;
@@ -16,39 +18,39 @@ public class ManejadorDinero implements Manejador
         this.next = m;
     }
 
-    @Override
+    @Override //solo si lo completa lo retira del manejador
     public boolean retirar(double monto) {
-        if (monto==0 || monto<0) {
-            return false;
-        }if (monto%this.denominacion==0 && this.cantidad>0) {
-            if (retirar(this.cantidad-this.denominacion)) {
-                this.cantidad=(int)(this.cantidad-(monto/this.denominacion));
-                return true;
-            }return false;
-            
-        } else{
-            if (next!=null) {
-                return next.depositar(cantidad, denominacion);
+        LinkedList<Integer> listBilletes = new LinkedList<>();
+        double montoFaltante = monto;
+        Manejador manejInicio = this;
+        do{
+            double saldoManejador = manejInicio.getCantidad() * manejInicio.getDenominacion();
+            if (montoFaltante >= saldoManejador){
+                montoFaltante -= saldoManejador;
+                listBilletes.add(manejInicio.getCantidad());
+            }else{
+                int cantBilletes = (int) (montoFaltante / manejInicio.getDenominacion());
+                montoFaltante -= (cantBilletes * manejInicio.getDenominacion());
+                listBilletes.add(cantBilletes);
             }
-            else{
-                return false;
+        }while(montoFaltante > 0 || (manejInicio = manejInicio.getNext())!=null);
+        if (montoFaltante == 0){
+            manejInicio = this;
+            for(int cantB: listBilletes){
+                manejInicio.setCantidad(manejInicio.getCantidad()-cantB);
+                manejInicio = manejInicio.getNext();
             }
+            return true;
         }
+        return false;
     }
 
     @Override
-    public boolean depositar(int cantidad, double denominacion) {
-        if (this.denominacion == denominacion) {
-            this.cantidad = (int) (this.cantidad + (cantidad/denominacion));
-            return true;
-        }else{
-            if (next!=null) {
-                return next.depositar(cantidad, denominacion);
-            }
-            else{
-                return false;
-            }
-        }
+    public boolean depositar(int cantidad, double den) {
+        if(den != this.denominacion)
+            return false;
+        this.cantidad += cantidad;
+        return true;
     }
 
     @Override
@@ -66,9 +68,15 @@ public class ManejadorDinero implements Manejador
         this.cantidad = cantidad;
     }
 
+    public void setDenominacion(double denominacion) {
+        this.denominacion = denominacion;
+    }
+    
     @Override
     public Manejador getNext() {
         return this.next;
     }
+    
+    
 
 }

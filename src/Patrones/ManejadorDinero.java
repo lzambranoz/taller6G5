@@ -47,10 +47,14 @@ public class ManejadorDinero implements Manejador
 
     @Override
     public boolean depositar(int cantidad, double den) {
-        if(den != this.denominacion)
-            return false;
-        this.cantidad += cantidad;
-        return true;
+        Manejador manejInicio = this;
+        do{
+            if(den == manejInicio.getDenominacion()){
+                manejInicio.setCantidad(manejInicio.getCantidad() + cantidad);
+                return true;
+            }
+        }while((manejInicio = manejInicio.getNext())!=null);
+        return false;
     }
 
     @Override

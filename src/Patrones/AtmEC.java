@@ -133,6 +133,8 @@ public class AtmEC {
                     if(sacarDinero(amount)){
                         cuenta.Retirar(amount);
                         System.out.println("Your transaction was completed, take your money.\n\n");
+                    }else{
+                        System.out.println("Unsuccesful transaction\n\n");
                     }
                     anotherTransaction(cuenta);
                 }
@@ -148,9 +150,15 @@ public class AtmEC {
                 // Todo: actualizar tanto la cuenta como el atm
                 // Todo: Mostrar resumen de transacción o error
                 // "You have withdrawn "+amount+" and your new balance is "+balance;
-                this.manejador.depositar(cant,deposit);//actualizacion de los manejadores
-                this.setDinero(this.getDinero()+(deposit*cant)); //actualizacion atm
-                cuenta.Depositar(deposit * cant);
+                if (this.manejador.depositar(cant, deposit)){
+                    this.manejador.depositar(cant,deposit);//actualizacion de los manejadores
+                    this.setDinero(this.getDinero()+(deposit*cant)); //actualizacion atm
+                    cuenta.Depositar(deposit * cant);
+                    System.out.println("Your transaction was completed\n\n");
+                }else{
+                    System.out.println("Unsuccesful transaction\n\n");
+                }
+                
                 anotherTransaction(cuenta);
                 break; 
             case 3:

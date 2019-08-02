@@ -48,7 +48,7 @@ public class CuentaAdapter implements Cuenta{
     }
 
     @Override
-    public boolean Depositar(int monto, double denominacion) {
+    public boolean Depositar(double monto) {
         this.cuenta.deposit(monto);
         return true;
     }

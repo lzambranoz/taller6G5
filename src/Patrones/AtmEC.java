@@ -41,45 +41,68 @@ public class AtmEC {
         return dinero;
     }
     
-    public boolean sacarDinero(double dinero) { //asumir que siempre se deposita de la misma demonicacion
-       if(manejador.retirar(dinero)){ //false cuando dinero<al dinero del ATM y cuando no hay la cantidad necesaria de billetes para retirar
+    public boolean sacarDinero(double monto) { //asumir que siempre se deposita de la misma demonicacion
+       if(dinero!=0 && manejador.retirar(monto)){ //false cuando no tiene dinero en la cuenta o no hay posibilidad de retirar del cajero
+           dinero -= monto;
            return true;
-       }else{
-           return false;
        }
+       return false;
     }
+    
 
-    public void ingresarDinero(int cantidad, double denominacion) {
-        manejador.depositar(cantidad, denominacion);
+    public boolean ingresarDinero(int cant, double denominacion) {
+        if (manejador.depositar(cant, denominacion)){
+            dinero += (cant * denominacion);
+            return true;
+        }
+        return false;
     }
     
     public void addManejador(Manejador m){
-        if(this.manejador == null){
-            manejador = m;
-        }else{
-            manejador.setNext(m); //cambiar, siempre debe agregar al siguiente del siguiente
-        }
+        this.manejador = addManejador(m, this.manejador,null);
+    }
+    
+    private Manejador addManejador(Manejador m, Manejador mainManejador, Manejador previo){
+        if(mainManejador == null){
+            mainManejador = m;
+            dinero += m.getCantidad()*m.getDenominacion();
+        }else if (m.getDenominacion()== mainManejador.getDenominacion()){
+            mainManejador.setCantidad(m.getCantidad()+mainManejador.getCantidad());
+            dinero+=m.getCantidad() * m.getDenominacion();
+        }else if (m.getDenominacion()>mainManejador.getDenominacion()){
+            m.setNext(mainManejador);
+            if (previo != null)
+                previo.setNext(m);
+            return m;
+        }else 
+            mainManejador.setNext(addManejador(m, mainManejador.getNext(),mainManejador));
+        return mainManejador;
     }
 
     public void setManejador(Manejador manejador) {
         this.manejador = manejador;
     }
     
-    public Manejador removeManejador(double i){//cambie a double porque la denominacion es double y debo buscar eso, verdad?
-        Manejador m = new ManejadorDinero(0,0);
-        if(this.manejador.getDenominacion() == i){
-            m = this.manejador;
-            this.setManejador(this.manejador.getNext());
-        }else if(this.manejador.getNext().getDenominacion() == i){
-            m = this.manejador.getNext();
-            Manejador after = this.manejador.getNext().getNext();
-            this.manejador.setNext(after);
-        }else{
-            //aqui deberia aplicarle el recursivo
-        }
-        
-        return m;
+    public Manejador removeManejador(double i){
+        Manejador saliente = new ManejadorDinero(0,0);
+        this.manejador = removeManejador(saliente, i,this.manejador,null);
+        return saliente;
     }
+    private Manejador removeManejador(Manejador m, double den,Manejador mainManejador, Manejador previo){
+        if(mainManejador == null)
+            m = mainManejador;
+        else if (den == mainManejador.getDenominacion()){
+            m = new ManejadorDinero(mainManejador.getCantidad(), mainManejador.getDenominacion());
+            dinero -= m.getCantidad()*m.getDenominacion();
+            if (previo != null){
+                previo.setNext(mainManejador.getNext());
+                mainManejador = previo;
+            }
+        }else if (den < mainManejador.getDenominacion())
+            mainManejador = removeManejador(m, den, mainManejador.getNext(), mainManejador);
+        return mainManejador;
+    }
+    
 
     //Dentro de las transacciones se debe llamar al ATM para hacer el retiro o deposito de la cuenta correspondiente
     public void transaction(CuentaAdapter cuenta){
@@ -108,10 +131,10 @@ public class AtmEC {
                     // Todo: Mostrar resumen de transacción o error
                     // "You have withdrawn "+amount+" and your new balance is "+balance;
                     if(sacarDinero(amount)){
-                        cuenta.Retirar(amount); //Aqui lanza el error
-                        instance.sacarDinero(amount); 
+                        cuenta.Retirar(amount);
+                        System.out.println("Your transaction was completed, take your money.\n\n");
                     }
-                    anotherTransaction(cuenta); 
+                    anotherTransaction(cuenta);
                 }
             break; 
             case 2:
@@ -127,6 +150,7 @@ public class AtmEC {
                 // "You have withdrawn "+amount+" and your new balance is "+balance;
                 this.manejador.depositar(cant,deposit);//actualizacion de los manejadores
                 this.setDinero(this.getDinero()+(deposit*cant)); //actualizacion atm
+                cuenta.Depositar(deposit * cant);
                 anotherTransaction(cuenta);
                 break; 
             case 3:
@@ -138,6 +162,10 @@ public class AtmEC {
             case 4:
                 // Todo: mostrar el balance del ATM con los billetes en cada manejador
                 System.out.println("ATM balance is: "+this.getDinero());
+                Manejador manejMostrado = this.manejador;
+                do{
+                    System.out.printf("%d banknotes in $%f denomination\n",manejMostrado.getCantidad(),manejMostrado.getDenominacion());
+                }while((manejMostrado = manejMostrado.getNext())!= null);
                 anotherTransaction(cuenta); 
                 break;
             default:
@@ -166,5 +194,42 @@ public class AtmEC {
                 break;    
         }
     }
+//    public void addManejador(Manejador m){
+//        
+//        if(this.manejador == null){
+//            manejador = m;
+//        }else {
+//            if (this.manejador.getDenominacion()< m.getDenominacion()){
+//                m.setNext(manejador);
+//                this.manejador = m;
+//                return;
+//            }else if (this.manejador.getDenominacion() == m.getDenominacion()){
+//                manejador.setCantidad(m.getCantidad());
+//                return;
+//            }
+//            Manejador manejCondition = this.manejador;
+//            while(manejCondition.getDenominacion() > m.getDenominacion()){
+//                Manejador next =manejCondition.getNext();
+//                if(manejCondition == null){
+//                    manejCondition.setNext(m);
+//                    break;
+//                }else{
+//                    
+//                }
+//
+//            }
+//        }
+//    }
+    
+//    Manejador m = new ManejadorDinero(0,0);
+//        if(this.manejador.getDenominacion() == i){
+//            m = this.manejador;
+//            this.setManejador(this.manejador.getNext());
+//        }else if(this.manejador.getNext().getDenominacion() == i){
+//            m = this.manejador.getNext();
+//            Manejador after = this.manejador.getNext().getNext();
+//            this.manejador.setNext(after);
+//        }else{}
+    
  
 }
